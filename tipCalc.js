@@ -5,7 +5,8 @@ function calculateTip() {
 	// document.getElementById("total").innerHTML = "Tip: $" + (x * (y / 100));
 	if (Number.isNaN(x) == false && Number.isNaN(y) == false) {
 		document.getElementById("tipTotal").innerHTML = "Tip: $" + (x * y);
-		document.getElementById("perPerson").innerHTML = "Total per person: " + ((x + (x * y)) / z);
+		if(z > 1){document.getElementById("perPerson").innerHTML = "Total per person: " + ((x + (x * y)) / z);}
+		else{document.getElementById("perPerson").innerHTML = null}
 		document.getElementById("total").innerHTML = "Total w/ tip: $" + (x + (x * y));
 	}
 	else{
