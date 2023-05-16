@@ -1,18 +1,14 @@
-// Code a tip calculator
-var x = parseInt(document.getElementById("price").value);
-var y = parseInt(document.getElementById("tip").value);
-// console.log(x);
-// console.log(Number.isInteger(parseInt(x)));
 function calculateTip() {
-	var x = parseInt(document.getElementById("price").value);
-	var y = parseInt(document.getElementById("tip").value);
+	var x = parseFloat(document.getElementById("price").value);
+	var y = parseFloat(document.getElementById("tip").value / 100);
+	var z = document.getElementById("numPeople").value;
 	// document.getElementById("total").innerHTML = "Tip: $" + (x * (y / 100));
-	if (Number.isInteger(x) && Number.isInteger(y)) {
-		document.getElementById("total").innerHTML = "Tip: $" + (x * (y / 100));
+	if (Number.isNaN(x) == false && Number.isNaN(y) == false) {
+		document.getElementById("tipTotal").innerHTML = "Tip: $" + (x * y);
+		document.getElementById("perPerson").innerHTML = "Total per person: " + ((x + (x * y)) / z);
+		document.getElementById("total").innerHTML = "Total w/ tip: $" + (x + (x * y));
 	}
 	else{
-		document.getElementById("total").innerHTML = "Please enter a valid number";
+		document.getElementById("tipTotal").innerHTML = "Please enter a valid number";
 	}
-	console.log("price is " + Number.isInteger(x));
-	console.log("tip is " + Number.isInteger(y));
 }

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <head>
+	<!-- <script src="tipCalc.js"></script> -->
 	<title>Tip Calculator</title>
 	<!-- <link rel="stylesheet" type="text/css" href="tipCalc.css"> -->
 	
 </head>
 <body>
-	<input type="number" placeholder="Price" id="price" min="0" value="10.1"><br><br>
-	<input type="number" placeholder="Tip %" id="tip" min="0" value="20"><br><br>
+	<input type="number" placeholder="Price" id="price" min="0"><br><br>
+	<input type="number" placeholder="Tip %" id="tip" min="0"><br><br>
+	<input type="number" placeholder="Number of Pepole" id="numPeople" min="1" ><br><br>
 	<button id="calculate" onclick="calculateTip()">Calculate</button><br><br>
+	<div id="tipTotal"></div>
+	<div id="perPerson"></div>
 	<div id="total"></div>
 	<script src="tipCalc.js"></script>
 </body>
