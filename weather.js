@@ -1,7 +1,7 @@
 var weather = document.getElementById("weather");
 const forecastTable = document.querySelector('#forecast tbody');
-// document.getElementById("inputLatitude").value = null;
-// document.getElementById("inputLongitude").value = null;
+document.getElementById("inputLatitude").value = null;
+document.getElementById("inputLongitude").value = null;
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
