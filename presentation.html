@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Q4</title>
+	<link rel="stylesheet" href="presentation.css">
+</head>
+<body>
+	<style>
+		#codeblock {
+			width: 750px;
+			height: 100%;
+			background-color: #000;
+			color: #fff;
+			font-family: monospace;
+			font-size: 1em;
+			overflow: auto;
+			padding: 1em;
+		}
+		#main {
+			width: 750px;
+		}
+		#dispForecastLink {
+			width: 321px;
+		}
+	</style>
+	<div id="main">For my project I did a website that took data from the Weather.gov API and had made a website that you could take someones location and get he weather data for it almost instantly. I chose this because I figured it would be cool to work with an API, and I had been able to successfully do it.</div><hr>
+	<div id="main">The first hurdle I had to deal with was getting the location of somebody using the built in location tools from just normal web browser features such as Geolocation. This page is interactive and you can try out all the code for yourself.</div><br>
+	<div id="codeblock">
+	<pre>
+function getLocation() {
+	if (navigator.geolocation) {
+		//Calls showPosition to send actual coordinates
+		navigator.geolocation.getCurrentPosition(showPosition);
+	} 
+	else {
+		console.log("Geolocation is not supported by this browser.");
+	}
+}
+
+function showPosition(position) {
+	//Sets the input boxes of Longitude and Latitude
+	document.getElementById("dispLatitude").value = position.coords.latitude;
+	document.getElementById("dispLongitude").value= position.coords.longitude;
+}
+	</pre>
+</div>
+<br>
+<button onclick="getLocation()">Run Code</button>
+<input type="text" id="dispLatitude" placeholder="Latitude"> <input type="text" id="dispLongitude" placeholder="Longitude"><br>
+<script>
+	function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	} 
+	else {
+		console.log("Geolocation is not supported by this browser.");
+	}
+}
+
+function showPosition(position) {
+	document.getElementById("dispLatitude").value = position.coords.latitude;
+	document.getElementById("dispLongitude").value= position.coords.longitude;
+}
+</script>
+</pre>
+<hr>
+<div id="main">The next hurdle I had to go over was how to use an API. For my problem I was using Weather.gov. It provides a simple output for me to process and it's free with no hassle like an API key or such. For this specific API, to get I want to get, I first have to get a link. To get the link we need, we have to use coordiantes and return the link. This code will use the coordinates of Oyster Bay High School.</div>
+<div id="codeblock">
+<pre>
+const url = "https://api.weather.gov/points/-73.5505,40.8924/forecast";
+function getForecastLink() {
+	//Resolve allows us to return the link from inside of the datafield
+	return new Promise((resolve, reject) => {
+		fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			const forecastLink = data.properties.forecast;
+			resolve(forecastLink);
+		})
+		// Makes sure nothing bad happens
+		.catch(error => {
+			reject(error);
+		});
+	});
+}
+</pre>
+</div>
+<script>
+	const url = "https://api.weather.gov/points/40.8707,-73.5257";
+	function getForecastLink() {
+	return new Promise((resolve, reject) => {
+		fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			const forecastLink = data.properties.forecast;
+			document.getElementById("dispForecastLink").value = forecastLink;
+			resolve(forecastLink);
+		})
+		.catch(error => {
+			reject(error);
+		});
+	});
+}
+</script>
+<button onclick="getForecastLink()">Run Code</button> <input type="text" id="dispForecastLink" placeholder="Forecast Link">
+<hr>
+<div id="main">The last part of the project was just getting the data from the API. We can use something similar to the last code and set the table from inside of the datafield. For the example I'm going to provide the link again instead of processing it for example purposes.</div>
+<div id="codeblock">
+<pre>
+const url = "https://api.weather.gov/gridpoints/OKX/35,35/forecast";
+function getTodaysForecast(url) {
+	fetch(url)
+	.then(response => response.json())
+	.then(data => {
+	  const periods = data.properties.periods;
+	  const forecastTable = document.querySelector('#forecast tbody');
+	  for (let i = 0; i < periods.length; i += 2) {
+		const date = new Date(periods[i].startTime).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+		const dayTemp = `${periods[i].temperature}°${periods[i].temperatureUnit}`;
+		const nightTemp = `${periods[i + 1].temperature}°${periods[i + 1].temperatureUnit}`;
+		const row = forecastTable.insertRow();
+		const dateCell = row.insertCell();
+		const dayTempCell = row.insertCell();
+		const nightTempCell = row.insertCell();
+		dateCell.innerHTML = date;
+		dayTempCell.innerHTML = dayTemp;
+		nightTempCell.innerHTML = nightTemp;
+	  }
+	})
+	.catch(error => console.log(error));
+}
+</pre>
+</div>
+<button onclick="getTodaysForecast()">Run Code</button>
+<table id="forecast">
+	<thead>
+	  <tr>
+		<th>Date</th>
+		<th>Day Temperature</th>
+		<th>Night Temperature</th>
+	  </tr>
+	</thead>
+	<tbody>
+	</tbody>
+  </table>
+  <script>
+	const forecastTable = document.querySelector('#forecast tbody');
+	const url2 = "https://api.weather.gov/gridpoints/OKX/35,35/forecast";
+		function getTodaysForecast() {
+		while (forecastTable.rows.length > 1) {
+			forecastTable.deleteRow(1);
+		}
+	  fetch(url2)
+	  .then(response => response.json())
+	  .then(data => {
+		const periods = data.properties.periods;
+		const forecastTable = document.querySelector('#forecast tbody');
+		for (let i = 0; i < periods.length; i += 2) {
+		  const date = new Date(periods[i].startTime).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+		  const dayTemp = `${periods[i].temperature}°${periods[i].temperatureUnit}`;
+		  const nightTemp = `${periods[i + 1].temperature}°${periods[i + 1].temperatureUnit}`;
+		  const row = forecastTable.insertRow();
+		  const dateCell = row.insertCell();
+		  const dayTempCell = row.insertCell();
+		  const nightTempCell = row.insertCell();
+		  dateCell.innerHTML = date;
+		  dayTempCell.innerHTML = dayTemp;
+		  nightTempCell.innerHTML = nightTemp;
+		}
+	  })
+	  .catch(error => console.log(error));
+	}
+	</script>
+	<style>
+		tr {
+			text-align: center;
+		}
+	</style>
+</body>
+</html>
